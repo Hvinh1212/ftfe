@@ -51,81 +51,80 @@
                             <div class="space-y">
                                 <div class="row row-cols-2 g-4">
                                     <div>
-                                        <label class="form-label" for="full_name">
-                                            Full Name
-                                        </label>
-                                        <input type="text" name="name" id="name" placeholder="Enter full name"
-                                            class="form-control">
+                                        <label class="form-label" for="name">Full Name</label>
+                                        <input type="text" name="name" id="name" value="{{ old('name') }}"
+                                            placeholder="Enter full name"
+                                            class="form-control @error('name') is-invalid @enderror">
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div>
-                                        <label class="form-label" for="email">
-                                            Email
-                                        </label>
-                                        <input type="email" name="email" id="email" placeholder="Enter email"
-                                            class="form-control">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                            placeholder="Enter email"
+                                            class="form-control @error('email') is-invalid @enderror">
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div>
-                                        <label class="form-label">
-                                            User flag
-                                        </label>
-                                        <div>
-                                            <select name="user_flg[]" id="user_flg" class="form-control">
-                                                <option value="0">Select User Flag</option>
-                                                <option value="1">Admin</option>
-                                                <option value="2">User</option>
-                                                <option value="3">Support</option>
-                                            </select>
-                                        </div>
+                                        <label class="form-label" for="user_flg">User flag</label>
+                                        <select name="user_flg" id="user_flg"
+                                            class="form-select @error('user_flg') is-invalid @enderror">
+                                            <option value="">— Select —</option>
+                                            <option value="0" @selected(old('user_flg') === '0' || old('user_flg') === 0)>Admin (0)</option>
+                                            <option value="1" @selected(old('user_flg') === '1' || old('user_flg') === 1)>User (1)</option>
+                                            <option value="2" @selected(old('user_flg') === '2' || old('user_flg') === 2)>Support (2)</option>
+                                        </select>
+                                        @error('user_flg')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 
-                                <div class="row row-cols-2 g-4">
+                                <div class="row row-cols-2 g-4 mt-1">
                                     <div>
-                                        <label class="form-label" for="datePicker">
-                                            Date of Birth
-                                        </label>
-
-                                        <div>
-                                            <input type="text" name="date_of_birth" id="datePicker"
-                                                class="form-control"
-                                                autocomplete="off">
-                                        </div>
+                                        <label class="form-label" for="datePicker">Date of Birth</label>
+                                        <input type="text" name="date_of_birth" id="datePicker"
+                                            value="{{ old('date_of_birth') }}" class="form-control @error('date_of_birth') is-invalid @enderror"
+                                            autocomplete="off" placeholder="YYYY/MM/DD">
+                                        @error('date_of_birth')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div>
-                                        <label class="form-label" for="phone">
-                                            Phone
-                                        </label>
-                                        <input type="text" name="phone" id="phone"
-                                            class="form-control">
+                                        <label class="form-label" for="phone">Phone</label>
+                                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
+                                            class="form-control @error('phone') is-invalid @enderror">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-
                                 </div>
 
-                                <div class="row row-cols-2 g-4">
+                                <div class="row row-cols-2 g-4 mt-1">
                                     <div>
-                                        <label class="form-label" for="datePicker">
-                                            Password
-                                        </label>
-
-                                        <div>
-                                            <input type="password" name="password" id="password"
-                                                class="form-control">
-                                        </div>
+                                        <label class="form-label" for="password">Password</label>
+                                        <input type="password" name="password" id="password"
+                                            class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <div>
-                                        <label class="form-label" for="re_password">
-                                            Re-Password
-                                        </label>
-                                        <input type="password" name="re_password" id="re_password"
-                                            class="form-control">
+                                        <label class="form-label" for="password_confirmation">Confirm password</label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            class="form-control" autocomplete="new-password">
                                     </div>
-
                                 </div>
+
                                 <div class="text-end mt-3">
+                                    <a href="{{ route('users.index') }}" class="btn btn-outline-secondary me-2">Cancel</a>
                                     <button type="submit" class="btn btn-primary">Add User</button>
                                 </div>
                             </div>
@@ -144,10 +143,10 @@
     });
 
     const passwordEl = document.querySelector('#password');
-    const rePasswordEl = document.querySelector('#re_password');
+    const rePasswordEl = document.querySelector('#password_confirmation');
     rePasswordEl.addEventListener('input', function() {
         if (this.value !== passwordEl.value) {
-            rePasswordEl.setCustomValidity('The password and re-password must be the same.');
+            rePasswordEl.setCustomValidity('Passwords must match.');
         } else {
             rePasswordEl.setCustomValidity('');
         }

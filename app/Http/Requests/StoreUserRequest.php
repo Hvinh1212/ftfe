@@ -2,49 +2,57 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'date_of_birth' => $this->filled('date_of_birth') ? trim((string) $this->date_of_birth) : null,
+            'phone' => $this->filled('phone') ? trim((string) $this->phone) : null,
+        ]);
+    }
+
     public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'user_flg' => 'required|array',
-            'date_of_birth' => 'required|date_format:Y/m/d',
-            'phone' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'user_flg' => 'required|integer|in:0,1,2',
+            'date_of_birth' => 'nullable|date_format:Y/m/d',
+            'phone' => 'nullable|string|max:32',
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        if ($this->filled('date_of_birth')) {
+            $this->merge([
+                'date_of_birth' => Carbon::createFromFormat('Y/m/d', $this->string('date_of_birth'))->format('Y-m-d'),
+            ]);
+        }
     }
 
     public function messages(): array
     {
         return [
             'name.required' => 'The name field is required.',
-            'name.string' => 'The name field must be a string.',
-            'name.max' => 'The name field must be less than 255 characters.',
             'email.required' => 'The email field is required.',
-            'email.email' => 'The email field must be a valid email address.',
             'email.unique' => 'The email address has already been taken.',
             'password.required' => 'The password field is required.',
-            'password.string' => 'The password field must be a string.',
-            'password.min' => 'The password field must be at least 8 characters.',
-            'user_flg.required' => 'The user flag field is required.',
-            'user_flg.array' => 'The user flag field must be an array.',
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'user_flg.required' => 'Please select a user flag.',
+            'user_flg.in' => 'The selected user flag is invalid.',
+            'date_of_birth.date_format' => 'The date of birth must be in YYYY/MM/DD format.',
         ];
     }
 }
