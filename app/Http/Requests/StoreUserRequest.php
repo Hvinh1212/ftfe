@@ -23,10 +23,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|max:100|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'user_flg' => 'required|integer|in:0,1,2',
+            'user_flg' => 'required|integer',
             'date_of_birth' => 'nullable|date_format:Y/m/d',
             'phone' => 'nullable|string|max:32',
         ];
@@ -46,13 +46,16 @@ class StoreUserRequest extends FormRequest
         return [
             'name.required' => 'The name field is required.',
             'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.max' => 'The email must be less than 100 characters.',
             'email.unique' => 'The email address has already been taken.',
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least 8 characters.',
             'password.confirmed' => 'The password confirmation does not match.',
-            'user_flg.required' => 'Please select a user flag.',
-            'user_flg.in' => 'The selected user flag is invalid.',
+            'user_flg.required' => 'The user flag field is required.',
+            'user_flg.integer' => 'The user flag must be an integer.',
             'date_of_birth.date_format' => 'The date of birth must be in YYYY/MM/DD format.',
+            'phone.max' => 'The phone must be less than 32 characters.',
         ];
     }
 }

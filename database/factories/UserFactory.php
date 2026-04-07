@@ -29,7 +29,16 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'date_of_birth' => fake()->date(),
             'phone' => fake()->phoneNumber(),
+            'address' => fake()->address(),
             'password' => static::$password ??= Hash::make('password'),
+            'user_flg' => fake()->numberBetween(0, 2),
+            'del_flg' => fake()->numberBetween(0, 1),
+            'deleted_at' => fake()->dateTime(),
+            'deleted_by' => fake()->numberBetween(1, 100),
+            'created_at' => fake()->dateTime(),
+            'created_by' => fake()->numberBetween(1, 100),
+            'updated_at' => fake()->dateTime(),
+            'updated_by' => fake()->numberBetween(1, 100),
             'remember_token' => Str::random(10),
         ];
     }

@@ -15,11 +15,11 @@ class UserRepository
         $query = User::query();
 
         if ($request->filled('full_name')) {
-            $query->where('name', 'like', '%'.$request->string('full_name')->trim().'%');
+            $query->where('name', 'like', '%' . $request->string('full_name')->trim() . '%');
         }
 
         if ($request->filled('email')) {
-            $query->where('email', 'like', '%'.$request->string('email')->trim().'%');
+            $query->where('email', 'like', '%' . $request->string('email')->trim() . '%');
         }
 
         if ($request->filled('user_flg')) {
@@ -33,7 +33,7 @@ class UserRepository
         }
 
         if ($request->filled('phone')) {
-            $query->where('phone', 'like', '%'.$request->string('phone')->trim().'%');
+            $query->where('phone', 'like', '%' . $request->string('phone')->trim() . '%');
         }
 
         return $query;
@@ -51,7 +51,7 @@ class UserRepository
     public function exportCsvResponse(Request $request): StreamedResponse
     {
         $query = $this->filterQuery($request);
-        $filename = 'users_'.now()->format('Ymd_His').'.csv';
+        $filename = 'users_' . now()->format('Ymd_His') . '.csv';
 
         return response()->streamDownload(function () use ($query) {
             $out = fopen('php://output', 'w');
@@ -81,5 +81,26 @@ class UserRepository
     public function create(array $attributes): User
     {
         return User::create($attributes);
+    }
+
+    public function softDelete(User $user, array $data): User
+    {
+        $user->update($data);
+        return $user->fresh();
+    }
+
+    public function update(User $user, array $data): User
+    {
+        $user->update($data);
+        return $user->fresh();
+    }
+
+    public function find($id): User
+    {
+        return User::find($id);
+        if (!$user) {
+            throw new \Exception('User not found');
+        }
+        return $user;
     }
 }

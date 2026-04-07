@@ -23,7 +23,13 @@ class User extends Authenticatable
         'password',
         'date_of_birth',
         'phone',
+        'address',
         'user_flg',
+        'del_flg',
+        'deleted_at',
+        'deleted_by',
+        'created_by',
+        'updated_by',
     ];
 
     /**

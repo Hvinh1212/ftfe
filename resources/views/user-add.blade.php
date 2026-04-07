@@ -56,7 +56,7 @@
                                             placeholder="Enter full name"
                                             class="form-control @error('name') is-invalid @enderror">
                                         @error('name')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -66,7 +66,7 @@
                                             placeholder="Enter email"
                                             class="form-control @error('email') is-invalid @enderror">
                                         @error('email')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -75,12 +75,12 @@
                                         <select name="user_flg" id="user_flg"
                                             class="form-select @error('user_flg') is-invalid @enderror">
                                             <option value="">— Select —</option>
-                                            <option value="0" @selected(old('user_flg') === '0' || old('user_flg') === 0)>Admin (0)</option>
-                                            <option value="1" @selected(old('user_flg') === '1' || old('user_flg') === 1)>User (1)</option>
-                                            <option value="2" @selected(old('user_flg') === '2' || old('user_flg') === 2)>Support (2)</option>
+                                            <option value="0" @selected(old('user_flg')==='0' || old('user_flg')===0)>Admin (0)</option>
+                                            <option value="1" @selected(old('user_flg')==='1' || old('user_flg')===1)>User (1)</option>
+                                            <option value="2" @selected(old('user_flg')==='2' || old('user_flg')===2)>Support (2)</option>
                                         </select>
                                         @error('user_flg')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                             value="{{ old('date_of_birth') }}" class="form-control @error('date_of_birth') is-invalid @enderror"
                                             autocomplete="off" placeholder="YYYY/MM/DD">
                                         @error('date_of_birth')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -101,7 +101,7 @@
                                         <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
                                             class="form-control @error('phone') is-invalid @enderror">
                                         @error('phone')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                                         <input type="password" name="password" id="password"
                                             class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
                                         @error('password')
-                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
@@ -135,22 +135,7 @@
         </div>
     </div>
 </body>
-
-<script>
-    const datePickerEl = document.querySelector('#datePicker');
-    const fp = flatpickr(datePickerEl, {
-        dateFormat: "Y/m/d"
-    });
-
-    const passwordEl = document.querySelector('#password');
-    const rePasswordEl = document.querySelector('#password_confirmation');
-    rePasswordEl.addEventListener('input', function() {
-        if (this.value !== passwordEl.value) {
-            rePasswordEl.setCustomValidity('Passwords must match.');
-        } else {
-            rePasswordEl.setCustomValidity('');
-        }
-    });
-</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="{{ asset('js/user-add.js') }}"></script>
 
 </html>

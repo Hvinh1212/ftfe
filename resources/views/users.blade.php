@@ -11,6 +11,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.min.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -120,10 +123,10 @@
             <div class="col py-3">
 
                 @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 @endif
 
                 <div class="card">
@@ -261,8 +264,12 @@
                                     @foreach ($records as $record)
                                     <tr>
                                         <td colspan="2" class="d-flex gap-2">
-                                            <button type="button" class="btn btn-danger">Delete</button>
-                                            <button type="button" class="btn btn-warning">Edit</button>
+                                            <form action="{{ route('user.soft-delete', $record) }}" class="btn-delete" method="post" class="d-inline">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                            <a href="{{ route('user.edit', $record->id) }}" class="btn btn-warning">Edit</a>
                                         </td>
                                         <td>{{ $record->name }}</td>
                                         <td>{{ $record->email }}</td>
@@ -281,22 +288,7 @@
         </div>
 
 </body>
-
-<script>
-    const datePickerEl = document.querySelector('#datePicker');
-    const fp = flatpickr(datePickerEl, {
-        dateFormat: "Y/m/d"
-    });
-
-    document.getElementById('btnClearForm').addEventListener('click', function() {
-        document.getElementById('full_name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phone').value = '';
-        fp.clear();
-        document.querySelectorAll('#searchForm input[name="user_flg[]"]').forEach(function(cb) {
-            cb.checked = true;
-        });
-    });
-</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="{{ asset('js/users.js') }}"></script>
 
 </html>

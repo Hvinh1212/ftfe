@@ -20,8 +20,14 @@ return new class extends Migration
             $table->tinyInteger('user_flg')->default(1);
             $table->date('date_of_birth')->nullable();
             $table->string('phone', 32)->nullable();
-            $table->rememberToken();
+            $table->string('address')->nullable();
+            $table->tinyInteger('del_flg')->default(0);
             $table->timestamps();
+            $table->rememberToken();
+            $table->timestamp('deleted_at')->nullable();
+            $table->integer('deleted_by')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
