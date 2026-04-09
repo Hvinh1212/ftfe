@@ -22,11 +22,13 @@ class StoreUserRequest extends FormRequest
 
     public function rules(): array
     {
+        $user = $this->route('user');
+
         return [
             'name' => 'required|string|max:50',
-            'email' => 'required|email|max:100|unique:users,email',
+            'email' => 'required|email|max:100|unique:users,email' . ($user ? (',' . $user->id) : ''),
             'password' => 'required|string|min:8|confirmed',
-            'user_flg' => 'required|integer',
+            'user_flg' => 'required|integer|in:0,1,2',
             'date_of_birth' => 'nullable|date_format:Y/m/d',
             'phone' => 'nullable|string|max:32',
         ];

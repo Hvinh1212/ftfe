@@ -12,6 +12,12 @@ $(function () {
         $('#searchForm input[name="user_flg[]"]').prop('checked', true);
     });
 
+    $('#importFile').on('change', function () {
+        if (this.files && this.files.length > 0) {
+            $('#importForm').trigger('submit');
+        }
+    });
+
     $(document).on('submit', 'form.btn-delete', function (e) {
         e.preventDefault();
         const form = this;

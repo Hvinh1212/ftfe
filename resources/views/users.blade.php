@@ -128,6 +128,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
+                @if (session('import_errors') && count(session('import_errors')) > 0)
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div class="fw-semibold mb-1">Import warnings</div>
+                    <ul class="mb-0">
+                        @foreach (session('import_errors') as $err)
+                        <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
 
                 <div class="card">
                     <div class="card-header">
@@ -225,11 +236,20 @@
                                 </div>
                                 <div class="text-end mt-3">
                                     <button type="button" class="btn btn-outline-primary" id="btnClearForm">Clear</button>
+                                    <label for="importFile" class="btn btn-outline-primary mb-0">Import CSV</label>
                                     <button type="submit" class="btn btn-outline-primary" name="export" value="1">Export CSV</button>
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
                             </div>
                         </form>
+
+                        <form id="importForm" action="{{ route('users.import') }}" method="post" enctype="multipart/form-data"
+                            class="visually-hidden">
+                            @csrf
+                            <input type="file" name="file" id="importFile" accept=".csv,text/csv" class="visually-hidden">
+                        </form>
+
+
 
                     </div>
                 </div>

@@ -58,7 +58,29 @@ class UserController extends Controller
                 ->route('users.index')
                 ->with('error', 'User not found');
         }
-
         return view('user-edit', compact('user'));
+    }
+
+    public function update(StoreUserRequest $request, User $user)
+    {
+        $this->userRepository->update($user, $request->validated());
+
+        return redirect()
+            ->route('users.index')
+            ->with('success', 'User updated successfully');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $result = $this->userRepository->importCsv($request->file('file'));
+
+        return redirect()
+            ->route('users.index')
+            ->with('success', "Imported: {$result['imported']}, Skipped: {$result['skipped']}")
+            ->with('import_errors', $result['errors']);
     }
 }
